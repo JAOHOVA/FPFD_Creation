@@ -1,0 +1,5 @@
+//;fromid;title;special id;class;name;;;;;;;;;;
+BEGIN;;catalogue;705;;CATALOGUE;;;;;;;;;;
+//;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;extralien;phpconstraint;options
+ATTR;CAT_TYPEFORMATION;CAT_FR_COMP;Formation spécifique (pour le traitement);N;N;enum;142;W;N;;; |,TITRE_PRO|Titre professionnel,AIPR|AIPR,AFT|AFT,ATTEST_RECUPERATION_POINT|Attestation récupération de points,AUTORISATION_CONDUITE|Autorisation de conduite (liée CACES),AUTORISATION_CONDUITE_FORMATION|Autorisation de conduite formation,ATTEST_SUIVI_FORM_MOBILITE|Attestation suivi formation mobilité,NON_DELIVRANCE_CACES|Ne permet pas la délivrance d’un CACES,HABILITATION_ELECTRIQUE|Habilitation électrique,PERMIS|Permis,FRANCE_CHIMIE|France Chimie;;;bmenu=no|eunset=yes|system=yes|eformat=list|multiple=yes
+END;0;;;;;;;;;;;;;;

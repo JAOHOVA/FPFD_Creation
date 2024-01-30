@@ -1,0 +1,570 @@
+<html>
+	<head>
+		<title>Tableau de bord Edition</title>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+            <link rel="stylesheet" type="text/css" href="jscalendar/Layout/calendar-win2k-2.css" />
+
+            <link rel="stylesheet" type="text/css" href="[CORE_SBASEURL]app=CORE&action=CORE_CSS" />
+            <link rel="stylesheet" type="text/css" href="[CORE_SBASEURL]app=FDL&action=FDL_CSS" />
+
+            <link rel="stylesheet" type="text/css" href="STYLE/DEFAULT/Layout/gen.css?wv=2.10.0-1" />
+            <link rel="stylesheet" type="text/css" href="WHAT/Layout/size-normal.css?wv=2.10.0-1" />
+
+            <link rel="stylesheet" type="text/css" href="./NEVEA_ADDONS/Librairie/Bootstrap/Css/bootstrap.min.css" />
+            <link rel="stylesheet" type="text/css" href="./NEVEA_ADDONS/Librairie/Bootstrap/Css/bootstrap-select.css" />
+
+            <script language="javascript" src="jscalendar/Layout/calendar.js"></script>
+            <script language="javascript" src="jscalendar/Layout/calendar-fr.js"></script>
+            <script language="javascript" src="jscalendar/Layout/calendar-setup.js"></script>
+            <script language="javascript" src="./FDL/Layout/common.js"></script>
+
+            <script language="javascript" src="WHAT/Layout/subwindow.js"></script>
+            <script language="javascript" src="WHAT/Layout/geometry.js"></script>
+            <script language="javascript" src="WHAT/Layout/PopupWindow.js"></script>
+            <script language="javascript" src="WHAT/Layout/ColorPicker2.js"></script>
+            <script language="javascript" src="WHAT/Layout/DHTMLapi.js"></script>
+
+            <script language="javascript" src="./NEVEA_ADDONS/Librairie/Bootstrap/js/jquery.min.js"></script>
+            <script language="javascript" src="./NEVEA_ADDONS/Librairie/Bootstrap/js/bootstrap.bundle.min.js"></script>
+            <script language="javascript" src="./NEVEA_ADDONS/Librairie/Bootstrap/js/bootstrap-select.js"></script>
+
+            <style type="text/css">
+                fieldset{
+                -moz-border-radius:5px;
+                }
+
+                legend{
+                color: #126AB5;
+                }
+
+                .error{
+                color: #FF0000;
+                font-weight: bold;
+                }
+                .good{
+                color: #000000;
+                font-weight: bold;
+                }
+                legend
+                {
+                font-weight: normal;
+                color: #3366FF;
+                }
+                /*.odd{
+                color: black;
+                background-color: #DCDCDC;
+                }*/
+                .even{
+                color: black;
+                background-color: #FAFAFA;
+                }
+
+                table #menuImpression tbody tr:nth-child(odd){
+                    background-color:DCDCDC;
+                }
+
+                legend{
+                    font-size:14px;
+                }
+
+                body{
+                  font-family: "ROBOTO" !important;
+                }
+
+                @font-face {
+                  font-family: "ROBOTO";
+                  src: url('NEVEA_CUSTOM/Fonts/Roboto-Regular.ttf');
+                }
+
+            </style>
+
+				<script language="javascript">
+					window.onload = maxWindow;
+					var WindowObjectReference = null;
+					
+					function maxWindow(){
+						window.moveTo(0,0);
+						top.window.resizeTo(600, 650);
+					}
+
+					function submitForm(){
+
+						// Convocation
+						var ochkConvocation = document.getElementById("chkConvocation");
+
+						// Convocation Personnelle
+						var ochkConvocationPersonnelle =
+						document.getElementById("chkConvocationPersonnelle");
+
+						// chkAttEntreeFormation
+						var ochkAttEntreeFormation =
+						document.getElementById("chkAttEntreeFormation");
+
+						// chkFicheInscriptionIndividuelle
+						var ochkFicheInscriptionIndividuelle =
+						document.getElementById("chkFicheInscriptionIndividuelle");
+
+						// chkChevalet
+						var ochkChevalet = document.getElementById("chkChevalet");
+
+						// chkBienvenue
+						var ochkBienvenue = document.getElementById("chkBienvenue");
+
+						// chkEmargermentCollectif
+						var ochkEmargermentCollectif =
+						document.getElementById("chkEmargermentCollectif");
+
+                        // Récupère les apprenants
+                        var oListeApprenant = document.getElementById("id_listeApprenant");
+                        var listeApprenant = "";
+                        for(i=0;i<oListeApprenant.options.length;i++){
+                            if(oListeApprenant.options[i].selected){
+                                if(listeApprenant != "") listeApprenant += "*";
+                                listeApprenant += oListeApprenant.options[i].value;
+                            }
+                        }
+                        if(listeApprenant == ""){
+                            listeApprenant = document.getElementById("apprenantActionForm").value;
+                        }
+                        document.getElementById("apprenantSelectionne").value = listeApprenant;
+
+						var oDateDebut = document.getElementById("datedebut");
+						var oDateFin = document.getElementById("datefin");
+						var hfDateDebut = document.getElementById("date_debut");
+						var hfDateFin = document.getElementById("date_fin");
+						hfDateDebut.value = oDateDebut.value;
+						hfDateFin.value = oDateFin.value;
+
+						// chkPresenceIndividuelle
+						var ochkPresenceIndividuelle = document.getElementById("chkPresenceIndividuelle");
+
+						// Changer le bouton
+						var objButton = document.getElementById("isSubmit");
+						objButton.disabled = true;
+	
+						var objWaiting = document.getElementById("waiting");
+						objWaiting.innerHTML = "&nbsp;<input type='button' value='Fermer la fen&ecirc;tre' onclick='self.close();return false;' />";
+
+						// Submit
+						document.fqrydates.submit()
+
+						// retour
+						objButton.disabled = false;
+					}
+
+					function selectionnerPre(source){
+						switch (source){
+							case "ec":
+								var liste = ["chkCodeBarrre", "chkConvocation", "chkConvocationPersonnelle", "chkAttEntreeFormation", "chkAttEntreeFormation", "chkFicheInscriptionIndividuelle", "chkChevalet", "chkBienvenue", "chkEmargermentCollectif"];
+								break;
+							case "pi":
+								var liste = ["chkCodeBarrre", "chkConvocation",	"chkConvocationPersonnelle", "chkAttEntreeFormation", "chkAttEntreeFormation", "chkFicheInscriptionIndividuelle", "chkChevalet", "chkBienvenue", "chkPresenceIndividuelle"];
+								break;
+							}
+						checkControl(liste, true);
+					}
+
+					function selectionnerPost(){
+						var liste = ["chkAttestationFormation", "chkCertificat"];
+						checkControl(liste, true);
+					}
+
+					function checkControl(lstControl, boolean){
+                        for (i = 0; i < lstControl.length; i++){
+							var oChk = document.getElementById(lstControl[i]);
+							if(oChk != undefined){
+                                oChk.checked = boolean;
+                            }
+						}
+					}
+
+					function deselectionner(){
+						var frm = document.getElementById("fedit");
+						var lstCheck = frm.getElementsByTagName('input');
+						for (var i = 0; i < lstCheck.length; i++){
+							if (lstCheck[i].type == 'checkbox'){
+								var oCheck = document.getElementById(lstCheck[i].name);
+                                if(oCheck != undefined && oCheck.checked == true){
+                                    oCheck.checked = false;
+                                }
+							}
+						}
+					}
+					
+					function openPrepa(modid){
+					
+						// Url
+						url = "[CORE_STANDURL]&app=FPDF&action=SELECT_LISTEPIECES&modid=" + modid;
+						
+						// Ouverture de la popup
+						if (WindowObjectReference == null || WindowObjectReference.closed) {
+							WindowObjectReference = window.open(url, 'Documents complémentaires', 'menubar=no,scrollbars=no,width=450,height=618,location=no,resizable=yes');
+							
+						} else {
+							WindowObjectReference.focus();
+							
+						}
+					}
+
+				</script>
+	</head>
+
+<body class="freedom">
+    <div class="good mb-2">S&eacute;lectionner les documents à &eacute;diter&nbsp;:</div>
+    <form id="fedit" class="fborder" name="fqrydates" method="POST" action="[CORE_STANDURL]&app=FPDF&action=EDITION_EXEC">
+        <table width="100%">
+            <tr>
+                <td>
+                    <fieldset><legend>Tri des documents</legend>
+                        <input type="radio" name="chkTriDoc" value="typeDoc" checked="checked" /> par type&nbsp;&nbsp;|&nbsp;&nbsp;<input type="radio" name="chkTriDoc" value="apprenant" /> par apprenant
+                    </fieldset>
+                </td>
+            </tr>
+            <tr><td>&nbsp;</td></tr>
+            <tr>
+                <td>
+                    <fieldset><legend>Les apprenants</legend>
+                    [LISTE_APPRENANT]
+                    </fieldset>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <fieldset><legend>Action de formation&nbsp;:&nbsp;<b>[MODLIB]</b></legend>
+                        <input type="hidden" name="modid" id="modid" value="[MODID]" />
+                        <table id="menuImpression" width="100%" border="0" cellspacing="1" cellpadding="1" class="noprint">
+                            <tr>
+                                <td width="5%">
+                                    <div align="center">
+                                        <input type="checkbox" name="chkCodeBarrre" id="chkCodeBarre" />
+                                    </div>
+                                </td>
+                                <td width="40%">QR Code</td>
+                                <td width="55%">&nbsp;</td>
+                           </tr>
+
+                            [ETIQUETTE_APPRENANT]
+
+                            <tr class="">
+                                <td width="5%">
+                                    <div align="center">
+                                        <input type="checkbox" name="chkConvocation" id="chkConvocation" />
+                                    </div>
+                                </td>
+                                <td width="40%">Convocation</td>
+                                <td width="55%">&nbsp;</td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div align="center">
+                                        <input type="checkbox" name="chkConvocationPersonnelle" id="chkConvocationPersonnelle" />
+                                    </div>
+                                </td>
+                                <td>Convocation personnelle</td>
+                                <td>&nbsp;</td>
+                            </tr>
+
+                            [REGLEMENT_INTERIEUR]
+
+                            <tr class="">
+                                <td>
+                                    <div align="center">
+                                        <input type="checkbox" name="chkAttEntreeFormation" id="chkAttEntreeFormation" />
+                                    </div>
+                                </td>
+                                <td>Attestation d'entr&eacute;e en formation</td>
+                                <td>&nbsp;<input type="checkbox" name="chkAEFSoustraitance" id="chkAEFSoustraitance" /> &nbsp;Edition donneur d'ordre</td>
+                            </tr>
+
+                            <tr [FIELD_HIDDEN]>
+                                <td>
+                                    <div align="center">
+                                        <input type="checkbox" name="chkFicheInscriptionIndividuelle" id="chkFicheInscriptionIndividuelle" />
+                                    </div>
+                                </td>
+                                <td>Fiche d'inscription individuelle</td>
+                                <td>&nbsp;</td>
+                           </tr>
+
+                            <tr class="" [FIELD_HIDDEN]>
+                                <td>
+                                    <div align="center">
+                                        <input type="checkbox" name="chkFicheQualite" id="chkFicheQualite" />
+                                    </div>
+                                </td>
+                                <td>Fiche Qualité</td>
+                                <td>&nbsp;</td>
+                            </tr>
+
+                            <tr [FIELD_HIDDEN]> 
+                                <td>
+                                    <div align="center">
+                                        <input type="checkbox" name="chkChevalet" id="chkChevalet" />
+                                    </div>
+                                </td>
+                                <td>Chevalet</td>
+                                <td>&nbsp;</td>
+                            </tr>
+
+                            <tr class="" [FIELD_HIDDEN]>
+                                <td>
+                                    <div align="center">
+                                        <input type="checkbox" name="chkBienvenue" id="chkBienvenue" />
+                                    </div>
+                                </td>
+                                <td>Bienvenue</td>
+                                <td>&nbsp;</td>
+                            </tr>
+
+                            <tr [FIELD_HIDDEN]>
+                                <td>
+                                    <div align="center">
+                                        <input type="checkbox" name="chkEmargermentCollectif" id="chkEmargermentCollectif" />
+                                    </div>
+                                </td>
+                                <td>Emargement collectif</td>
+                                <td>
+                                    <table width="100%" cellspacing="0">
+                                        <tr valign="top">
+                                            <td class="">Date d&eacute;but&nbsp;&nbsp;</td>
+                                            <td>
+                                                <input disabled="disabled" size="8" onblur="control_date(event,this)" type="text" name="_datedebut" id="datedebut" value="[DATEDEBUT]" />
+                                                <input type="button" onmousedown="Calendar_Init('datedebut','datedebutT',false)" id="datedebutT" value="&#133;" />
+                                                <input type="button" value="&diams;" title="Date manuelle" onclick="focus_date(event,'datedebut')" />
+                                                <input type="button" id="ix_datedebut" value="&times;" title="Effacer entr&eacute;e" onclick="clearInputs(['datedebut'],'')" />
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="">Date fin&nbsp;&nbsp;</td>
+                                            <td>
+                                                <input disabled="disabled" size="8" onblur="control_date(event,this)" type="text" name="_datefin" id="datefin" value="[DATEFIN]" />
+                                                <input type="button" onmousedown="Calendar_Init('datefin','datefinT',false)" id="datefinT" value="&#133;" />
+                                                <input type="button" value="&diams;" title="Date manuelle" onclick="focus_date(event,'datefin')" />
+                                                <input type="button" id="ix_datefin" value="&times;" title="Effacer entr&eacute;e" onclick="clearInputs(['datefin'],'')" />
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <input type="hidden" name="_date_debut" id="date_debut" value="" />
+                                                <input type="hidden" name="_date_fin" id="date_fin" value="" />
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                    </table>
+                                 </td>
+                            </tr>
+
+                            <tr class="" [FIELD_HIDDEN]>
+                                <td>
+                                    <div align="center">
+                                        <input type="checkbox" name="chkPresenceIndividuelle" id="chkPresenceIndividuelle" />
+                                    </div>
+                                </td>
+                                <td>Pr&eacute;sence individuelle hebdomadaire [COMPLEMENT_INFO_EMAEGEMENT]</td>
+                                <td>Semaine(s)&nbsp;&nbsp;[SELECTWEEK]<br />
+                                    <input type="checkbox" name="chkPISoustraitance" id="chkPISoustraitance" /> &nbsp;Edition donneur d'ordre</td>
+                            </tr>
+                            [EMARGEMENT_HEBDO_NUMERIQUE]
+                            <tr class="">
+                                <td>
+                                    <div align="center">
+                                        <input type="checkbox" name="chkPresenceIndividuelleMensuelle" id="chkPresenceIndividuelleMensuelle" />
+                                    </div>
+                                </td>
+                                <td>Pr&eacute;sence individuelle mensuelle [COMPLEMENT_INFO_EMAEGEMENT]</td>
+                                <td>Mois(s)&nbsp;&nbsp;[SELECTMONTH]<br />
+                                    <input type="checkbox" name="chkPIMSoustraitance" id="chkPIMSoustraitance" /> &nbsp;Edition donneur d'ordre</td>
+                            </tr>
+                            <tr class="">
+                                <td>
+                                    <div align="center">
+                                        <input type="checkbox" name="chkAttestationFormation" id="chkAttestationFormation" />
+                                    </div>
+                                </td>
+                                <td>Attestation de fin de formation</td>
+                                <td><input type="checkbox" name="chkATFRMSoustraitance" id="chkATFRMSoustraitance" /> &nbsp;Edition donneur d'ordre</td>
+                            </tr>
+
+                            <tr class="">
+                            <td>
+                                <div align="center">
+                                    <input type="checkbox" name="chkCertificationRealisation2020" id="chkCertificationRealisation2020" />
+                                </div>
+                            </td>
+                            <td>Certificat de réalisation (v. 2020)</td>
+                            <td><input type="checkbox" name="chkCertificationRealisation2020Soustraitance" id="chkCertificationRealisation2020Soustraitance" /> &nbsp;Edition donneur d'ordre</td></td>
+                            </tr>
+
+                            <tr style="display:[VIEWAIPR]" >
+                                <td>
+                                    <div align="center">
+                                        <input type="checkbox" name="chkAttestationFormationAipr" id="chkAttestationFormationAipr" />
+                                    </div>
+                                </td>
+                                <td>Attestation de formation AIPR</td>
+                                <td><input type="checkbox" name="chkATFRMAiprSoustraitance" id="chkATFRMAiprSoustraitance" /> &nbsp;Edition donneur d'ordre</td>
+                            </tr>
+
+                            <tr style="display:[VIEWAIPR]" >
+                                <td>
+                                    <div align="center">
+                                        <input type="checkbox" name="chkCerfaFormationAipr" id="chkCerfaFormationAipr" />
+                                    </div>
+                                </td>
+                                <td>Cerfa formation AIPR</td>
+                                <td>&nbsp;</td>
+                            </tr>
+
+                            <tr style="display:[VIEW_ATTEST_RECUPERATION_POINT]" >
+                                <td>
+                                    <div align="center">
+                                        <input type="checkbox" name="chkAttestationRecuperationPoint" id="chkAttestationRecuperationPoint" onClick="gestionInputAttestationRecuperationPoint()"/>
+                                    </div>
+                                </td>
+                                <td>Attestation récupération de point</td>
+                                <td>&nbsp;</td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div align="center">
+                                        <input type="checkbox" name="chkCertificat" id="chkCertificat" />
+                                    </div>
+                                </td>
+                                <td>Certificat</td>
+                                <td>&nbsp;</td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div align="center">
+                                        <input type="checkbox" name="chkCalendrier" id="chkCalendrier" />
+                                    </div>
+                                </td>
+                                <td>Calendrier de formation</td>
+                                <td>&nbsp;</td>
+                            </tr>
+
+                            <tr class="">
+                                <td>
+                                    <div align="center">
+                                        <input type="checkbox" name="chkRelanceCertificat" id="chkRelanceCertificat" />
+                                    </div>
+                                </td>
+                                <td>Relances certificat</td>
+                                <td>&nbsp;</td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div align="center">
+                                        <input type="checkbox" name="chkStage" id="chkStage" />
+                                    </div>
+                                </td>
+                                <td>Liste des stages en entreprise</td>
+                                <td>&nbsp;</td>
+                            </tr>
+
+                            <tr style="display:[VIEW_AUTORISATION_CONDUITE]" class="">
+                                <td>
+                                    <div align="center">
+                                        <input type="checkbox" name="chkAutorisationConduite" id="chkAutorisationConduite" />
+                                    </div>
+                                </td>
+                                <td>Autorisation de conduite (liée CACES)</td>
+                                <td>&nbsp;</td>
+                            </tr>
+
+                            <tr style="display:[VIEW_PERMIS_CONDUIRE_PRATIQUE]" class="">
+                                <td>
+                                    <div align="center">
+                                        <input type="checkbox" name="chkEpreuvePratiquePermis" id="chkEpreuvePratiquePermis" />
+                                    </div>
+                                </td>
+                                <td>Epreuve pratique du Permis de conduire</td>
+                                <td>
+                                    <input type="checkbox" name="chkEpreuvePratiquePermisEvt" id="chkEpreuvePratiquePermisEvt" />
+                                    &nbsp;(avec Evènement Apprenant créé)
+                                </td>
+                            </tr>
+
+                            <tr style="display:[VIEW_FRANCE_CHIMIE]" class="">
+                            <td>
+                                <div align="center">
+                                    <input type="checkbox" name="chkFranceChimie" id="chkFranceChimie" />
+                                </div>
+                            </td>
+                            <td>Attestation France Chimie</td>
+                            <td>&nbsp;</td>
+                            </tr>
+
+                            <tr style="display:[VIEW_AUTORISATION_CONDUITE_FORMATION]" class="">
+                            <td>
+                                <div align="center">
+                                    <input type="checkbox" name="chkAutorisationConduiteFormation" id="chkAutorisationConduiteFormation" />
+                                </div>
+                            </td>
+                            <td>Autorisation de conduite (formation)</td>
+                            <td>&nbsp;</td>
+                            </tr>
+
+                            <tr style="display:[VIEW_ATTEST_SUIVI_FORM_MOBILITE]" class="">
+                                <td>
+                                    <div align="center">
+                                        <input type="checkbox" name="chkAttestFormMobilite" id="chkAttestFormMobilite" />
+                                    </div>
+                                </td>
+                                <td>Attestation suivi formation mobilité</td>
+                                <td>&nbsp;</td>
+                            </tr>
+
+                            [ATTESTATIONB96]
+
+                        </table>
+                        <table width="100%">
+                            <tr valign='top'>
+                                    <td width="5%"></td>
+                                    <td width="40%">
+                                        <div align="right">S&eacute;lectionner les documents&nbsp;:&nbsp;
+                                            <br /><br />
+                                            <a href="javascript:void(0);return false;" onclick="deselectionner();return false;">D&eacute;selectionner tout</a>&nbsp;
+                                        </div>
+                                    </td>
+                                    <td width="55%">
+                                        <a href="javascript:void(0);return false" onclick="selectionnerPre('ec');return false;">pr&eacute; formation (&eacute;margement collectif) </a>
+                                        <br />
+                                        <a href="javascript:void(0);return false" onclick="selectionnerPre('pi');return false;">pr&eacute; formation (pr&eacute;sence individuelle)</a>
+                                        <br />
+                                        <a href="javascript:void(0);return false" onclick="selectionnerPost();return false">post formation</a>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <table width="100%" border="0" cellspacing="1" cellpadding="1" class="noprint">
+                                    <tr>
+                                        <td>
+                                            <div align="center"></div>
+                                        </td>
+                                        <td>
+                                            <span id="bouton"><input id="isSubmit" type="button" value="Editer les documents" onClick="submitForm()" /></span>
+                                        </td>
+                                        <td class="FREEDOMLabel">
+                                            <span id="waiting" class="good">&nbsp;</span>
+                                        </td>
+                                        <td class="FREEDOMLabel">[BTNDOSSIER]</td>
+                                    </tr>
+                                </table>
+                            </tr>
+                        </table>
+                    </fieldset>
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>
